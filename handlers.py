@@ -83,6 +83,8 @@ async def cmd_help(message: Message):
         "/log_food - Логирование еды\n"
         "/log_workout - Логирование тренировок\n"
         "/check_progress - Прогресс по воде и калориям\n"
+        "/progress_chart - Графики с прогрессом по воде и калориям\n"
+        "/recommend - Рекомендации"
     )
 
 
@@ -303,11 +305,11 @@ async def progress_chart(message: Message):
     fig, ax = plt.subplots(1, 2, figsize=(10, 5))
     sns.set_style("whitegrid")
 
-    sns.barplot(x=["Выпито", "Осталось"], y=[water_logged, max(water_goal - water_logged, 0)], ax=ax[0], palette=["blue", "gray"])
+    sns.barplot(x=["Выпито", "Осталось"], y=[water_logged, max(water_goal - water_logged, 0)], ax=ax[0], palette=["green", "blue"])
     ax[0].set_title("Прогресс по воде (мл)")
     ax[0].set_ylabel("мл")
 
-    sns.barplot(x=["Потреблено", "Осталось"], y=[calorie_logged, max(calorie_goal - calorie_logged, 0)], ax=ax[1], palette=["red", "gray"])
+    sns.barplot(x=["Потреблено", "Осталось"], y=[calorie_logged, max(calorie_goal - calorie_logged, 0)], ax=ax[1], palette=["red", "orange"])
     ax[1].set_title("Прогресс по калориям (ккал)")
     ax[1].set_ylabel("ккал")
 
@@ -330,8 +332,7 @@ low_calorie_foods = [
     "🥗 Салат (15 ккал на 100г)",
     "🥒 Огурец (16 ккал на 100г)",
     "🍅 Помидор (18 ккал на 100г)",
-    "🍏 Яблоко (52 ккал на 100г)",
-    "🐟 Тунец (130 ккал на 100г)"
+    "🍏 Яблоко (52 ккал на 100г)"
 ]
 
 workout_recommendations = [
@@ -357,7 +358,7 @@ async def recommend(message: Message):
     workout_text = "\n".join(workout_recommendation) if workout_recommendation else "Попробуйте лёгкую прогулку."
 
     await message.answer(
-        f"🍏 **Рекомендованные продукты с низкой калорийностью:**\n{food_recommendation}\n\n"
-        f"🏋️ **Рекомендованные тренировки:**\n{workout_text}",
+        f"**Рекомендованные продукты с низкой калорийностью:**\n{food_recommendation}\n\n"
+        f"**Рекомендованные тренировки:**\n{workout_text}",
         parse_mode=ParseMode.MARKDOWN
     )
